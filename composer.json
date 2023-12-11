@@ -13,7 +13,7 @@
     "require": {},
     "autoload": {
         "psr-4": {
-            "Clown\\Wechat\\": "src/"
+            "clown\\wechat\\": "src/"
         },
         "files": [
             "src/helper.php"
