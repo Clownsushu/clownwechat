@@ -1,0 +1,22 @@
+{
+    "name": "clown/wechat",
+    "description": "微信接口",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "clown",
+            "email": "812827345@qq.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Clown\\Wechat\\": "src/"
+        },
+        "files": [
+            "src/helper.php"
+        ]
+    }
+}
