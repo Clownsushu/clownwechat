@@ -1,7 +1,9 @@
 <?php
 namespace clown\wechat\xcx;
 
-
+/**
+ * 小程序基础接口类
+ */
 class Xcx extends Base
 {
     /**

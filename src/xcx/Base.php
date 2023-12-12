@@ -3,6 +3,9 @@ namespace clown\wechat\xcx;
 
 use clown\redis\Redis;
 
+/**
+ * 小程序基础类
+ */
 class Base
 {
     /**

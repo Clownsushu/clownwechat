@@ -1,7 +1,9 @@
 <?php
 namespace clown\wechat\xcx;
 
-
+/**
+ * 小程序生成小程序码和二维码类
+ */
 class XcxQrCode extends Base
 {
     /**
