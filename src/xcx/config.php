@@ -4,7 +4,7 @@
  */
 return [
     //缓存前缀
-    'cache_prefix' => 'wechat:',
+    'cache_prefix' => 'wechat:xcx:',
     //获取接口调用凭据
     'getAccessToken' => 'https://api.weixin.qq.com/cgi-bin/token',
     //小程序登录

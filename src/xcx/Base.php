@@ -65,7 +65,7 @@ class Base
     public function getAccessToken($grant_type = 'client_credential')
     {
         //拼接缓存前缀
-       $cache_key = $this->config['cache_prefix'] . 'xcx:access_token';
+       $cache_key = $this->config['cache_prefix'] . 'access_token';
 
        if($this->redis->exists($cache_key)){
            $this->access_token = $this->redis->get($cache_key);
