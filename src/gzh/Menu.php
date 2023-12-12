@@ -1,6 +1,9 @@
 <?php
 namespace clown\wechat\gzh;
 
+/**
+ * 公众号菜单类
+ */
 class Menu extends Base
 {
     /**

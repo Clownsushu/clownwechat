@@ -3,7 +3,7 @@ namespace clown\wechat\gzh;
 
 
 /**
- * 公众号模板消息
+ * 公众号模板消息类
  */
 class Template extends Base
 {

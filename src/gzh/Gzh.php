@@ -1,7 +1,9 @@
 <?php
 namespace clown\wechat\gzh;
 
-
+/**
+ * 公众号基础接口
+ */
 class Gzh extends Base
 {
     /**

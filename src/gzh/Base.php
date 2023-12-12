@@ -3,6 +3,9 @@ namespace clown\wechat\gzh;
 
 use clown\redis\Redis;
 
+/**
+ * 公众号基础类
+ */
 class Base
 {
     /**

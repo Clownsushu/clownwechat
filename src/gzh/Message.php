@@ -2,7 +2,7 @@
 namespace clown\wechat\gzh;
 
 /**
- * 回复消息
+ * 公众号回复消息类
  */
 class Message extends Base
 {

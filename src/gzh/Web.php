@@ -1,7 +1,9 @@
 <?php
 namespace clown\wechat\gzh;
 
-
+/**
+ * 公众号web授权类
+ */
 class Web extends Base
 {
     /**
