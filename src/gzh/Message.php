@@ -17,6 +17,25 @@ class Message extends Base
     }
 
     /**
+     * 获取消息类型
+     * @param $array array 微信传过来的数据, 如果MsgType == event 的时候获取Event里的内容
+     * @return string
+     */
+    public function getMsgType($array = [])
+    {
+        $string = '';
+
+        if(isset($array['MsgType'])){
+            $string = $array['MsgType'];
+            if($string == 'event'){
+                $string = isset($array['Event']) ? $array['Event'] : '';
+            }
+        }
+
+        return $string;
+    }
+
+    /**
      * 回复文本消息
      * @param $array array 要回复的内容
      * @return string

@@ -2,8 +2,6 @@
 namespace clown\wechat\gzh;
 
 
-use phpseclib3\Crypt\EC\Formats\Keys\XML;
-
 class Gzh extends Base
 {
     /**
@@ -36,7 +34,10 @@ class Gzh extends Base
 
             $array = json_decode(json_encode($xml), true);
 
-            return $this->responseMsg($array);
+            //获取消息类型
+            $msg_type = $this->getMsgType($array);
+
+            return $this->responseMsg($msg_type, $array);
         }
     }
 
@@ -88,32 +89,41 @@ class Gzh extends Base
         return $result;
     }
 
-    
     /**
-     * 消息返回
-     * @param $msg_type string 消息类型
-     * @param $response_data array 要返回的内容
+     * 获取消息类型
+     * @param $array array 微信传过来的数据
      * @return void|XML
      */
-    public function responseMsg($msg_type, $response_data = [], $event = '')
+    public function getMsgType($array = [])
     {
         $message = new Message();
 
-        switch ($msg_type){
+        return $message->getMsgType($array);
+    }
+
+    
+    /**
+     * 消息返回, 可获取消息类型后吗, 自行封装返回内容
+     * @param $msg_type string 要回复的消息类型
+     * @param $response_data array 要回复的内容
+     * @return void|XML
+     */
+    public function responseMsg($msg_type, $response_data = [])
+    {
+        $message = new Message();
+
+        switch ($msg_type) {
             case 'event': // 点击推事件
-                switch ($event){
-                    case 'CLICK': //单击事件
-                        break;
-                    case 'SCAN': // 用户已关注时事件推送
-                        break;
-                    case 'subscribe': // 用户关注事件
-                        break;
-                    case 'unsubscribe': // 用户取消关注时间
-                        break;
-                    case 'LOCATION': //地理位置
-                        break;
-                    default:
-                }
+                break;
+            case 'CLICK': //单击事件
+                break;
+            case 'SCAN': // 用户已关注时事件推送
+                break;
+            case 'subscribe': // 用户关注事件
+                break;
+            case 'unsubscribe': // 用户取消关注时间
+                break;
+            case 'LOCATION': //地理位置
                 break;
             case 'image': // 图片消息
                 $result = $message->responseImageMsg($response_data);
@@ -144,4 +154,6 @@ class Gzh extends Base
         }
 
         return $result;
+    }
+
 }

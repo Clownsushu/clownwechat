@@ -15,4 +15,8 @@ return [
     'selectMenu' => 'https://api.weixin.qq.com/cgi-bin/get_current_selfmenu_info?access_token=ACCESS_TOKEN',
     //删除菜单
     'deleteMenu' => 'https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=ACCESS_TOKEN',
+    //网页授权地址
+    'authorize' => 'https://open.weixin.qq.com/connect/oauth2/authorize',
+    //根据code获取openid
+    'code' => 'https://api.weixin.qq.com/sns/oauth2/access_token',
 ];
