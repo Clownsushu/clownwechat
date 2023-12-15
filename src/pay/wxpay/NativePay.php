@@ -8,9 +8,9 @@ use WeChatPay\Crypto\Rsa;
 use WeChatPay\Formatter;
 
 /**
- * 微信JSAPI支付
+ * 微信Native支付
  */
-class JsapiPay extends WxPayBase implements Pay
+class NativePay extends WxPayBase implements Pay
 {
     /**
      * 构造函数
@@ -38,34 +38,10 @@ class JsapiPay extends WxPayBase implements Pay
     }
 
     /**
-     * 获取签名算法
-     * @param $prepay_id string 预支付id
-     * @return array
-     */
-    public function getSign($prepay_id = '')
-    {
-        $merchantPrivateKeyFilePath = 'file://' . $this->apiclient_key_path;
-
-        $merchantPrivateKeyInstance = Rsa::from($merchantPrivateKeyFilePath);
-
-        $params = [
-            'appId'     => $this->appid,
-            'timeStamp' => (string)Formatter::timestamp(),
-            'nonceStr'  => Formatter::nonce(),
-            'package'   => $prepay_id,
-        ];
-        $params += ['paySign' => Rsa::sign(
-            Formatter::joinedByLineFeed(...array_values($params)),
-            $merchantPrivateKeyInstance
-        ), 'signType' => 'RSA'];
-
-        return $params;
-    }
-
-    /**
      * 统一下单
      * @param array $data 支付请求参数
-     * @return array
+     * @return mixed
+     * 正常返回: weixin://wxpay/bizpayurl?pr=xxxxx
      * @throws \Exception
      */
     public function getPrePay(array $data)
@@ -76,9 +52,7 @@ class JsapiPay extends WxPayBase implements Pay
         if(empty($data['out_trade_no'])) throw new \Exception("请传入商品订单号out_trade_no");
 
         if(empty($data['total'])) throw new \Exception("请传入支付金额, 单位:分total");
-
-        if(empty($data['openid'])) throw new \Exception("请传入支付用户openid");
-        //组装支付需要的参数
+        //组装请求数据
         $json = [
             'appid' => $this->appid,
             'mchid' => $this->mch_id,
@@ -89,11 +63,8 @@ class JsapiPay extends WxPayBase implements Pay
                 'total'    => $data['total'],
                 'currency' => 'CNY'
             ],
-            'payer' => [
-                'openid' => $data['openid'],
-            ],
         ];
-        //交易结束时间
+        //订单失效时间
         if(!empty($data['time_expire'])) $json['time_expire'] = $data['time_expire'];
         //附加数据
         if(!empty($data['attach'])) $json['attach'] = $data['attach'];
@@ -108,20 +79,24 @@ class JsapiPay extends WxPayBase implements Pay
         //结算信息
         if(!empty($data['settle_info'])) $json['settle_info'] = $data['settle_info'];
 
-        try{
-            $resp = $this->instance->chain('v3/pay/transactions/jsapi')
-                ->post([ 'json' => $json]);
+        try {
+            $resp = $this->instance
+                ->chain('v3/pay/transactions/native')
+                ->post(['json' => $json]);
+
             $result = json_decode($resp->getBody(), true);
 
-            if(!isset($result['prepay_id'])){
-                throw new \Exception('没有返回预支付id, 返回内容: ' . json_encode($result));
+            if(!isset($result['code_url'])) {
+                throw new \Exception('没有返回code_url, 返回内容: ' . json_encode($result));
             }
 
-            //调用签名并返回
-            return $this->getSign(http_build_query($result));
-        }catch (\Exception $e){
+            $pay_string = $result['code_url'];
+        } catch (\Exception $e) {
+            // 进行错误处理
             throw new \Exception('下单失败: ' . $e->getMessage());
         }
+
+        return $pay_string;
     }
 
     /**
@@ -131,9 +106,9 @@ class JsapiPay extends WxPayBase implements Pay
      */
     public function notify($inBody = [])
     {
-        // TODO: Implement notify() method.
         return parent::notify($inBody);
     }
+
 
     /**
      * 订单查询
@@ -148,6 +123,7 @@ class JsapiPay extends WxPayBase implements Pay
         // TODO: Implement orderQuery() method.
         return parent::orderQuery($order_code, $order_field);
     }
+
 
     /**
      * 订单关闭
@@ -193,5 +169,9 @@ class JsapiPay extends WxPayBase implements Pay
         return parent::refundQuery($out_refund_no);
     }
 
+    public function refundNotify($data = [])
+    {
+        return parent::refundNotify($data);
+    }
 
 }

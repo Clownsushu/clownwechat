@@ -1,10 +1,10 @@
 <?php
 namespace clown\wechat\pay\wxpay;
 
-use clown\wechat\pay\Base;
 use clown\wechat\pay\Pay;
+use clown\wechat\pay\WxPayBase;
 
-class H5Pay extends Base implements Pay
+class H5Pay extends WxPayBase implements Pay
 {
     /**
      * 构造函数
