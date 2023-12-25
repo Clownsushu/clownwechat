@@ -48,4 +48,41 @@ class Xcx extends Base
 
         return $result;
     }
+
+    /**
+     * 获取手机号码
+     * @param $code string  手机号获取凭证
+     * @param $is_return_phone bool 是否直接返回手机号码 默认 true 直接返回手机号码
+     * @return mixed
+     * @throws \Exception
+     */
+    public function getPhoneNumber($code = '', $is_return_phone = true)
+    {
+        if(empty($code)){
+            throw new \Exception('请传入code参数, 手机号授权时获取的 code');
+        }
+
+        $params = [
+            'code' => $code,
+        ];
+
+        //获取请求地址
+        $url = $this->replaceUrl($this->config['getPhoneNumber'], 'ACCESS_TOKEN', $this->access_token);
+        //post请求
+        $result = curlPost($url, $params);
+
+        if(isset($result['errcode']) && $result['errcode']){
+            throw new \Exception($result['errmsg']);
+        }
+
+        if(!isset($result['phone_info'])){
+            throw new \Exception('未返回手机号信息');
+        }
+
+        if($is_return_phone){
+            if(isset($result['phone_info']['purePhoneNumber'])) return $result['phone_info']['purePhoneNumber'];
+        }
+
+        return $result['phone_info'];
+    }
 }

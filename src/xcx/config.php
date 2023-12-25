@@ -13,5 +13,6 @@ return [
     'getQRCode' => 'https://api.weixin.qq.com/wxa/getwxacode?access_token=ACCESS_TOKEN',
     //获取不限制的小程序码
     'getUnlimitedQRCode' => 'https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=ACCESS_TOKEN',
-
+    //获取手机号码
+    'getPhoneNumber' => 'https://api.weixin.qq.com/wxa/business/getuserphonenumber?access_token=ACCESS_TOKEN',
 ];
