@@ -58,9 +58,7 @@ class Xcx extends Base
      */
     public function getPhoneNumber($code = '', $is_return_phone = true)
     {
-        if(empty($code)){
-            throw new \Exception('请传入code参数, 手机号授权时获取的 code');
-        }
+        if(empty($code)) throw new \Exception('请传入code参数, 手机号授权时获取的 code');
 
         $params = [
             'code' => $code,
@@ -79,9 +77,7 @@ class Xcx extends Base
             throw new \Exception('未返回手机号信息');
         }
 
-        if($is_return_phone){
-            if(isset($result['phone_info']['purePhoneNumber'])) return $result['phone_info']['purePhoneNumber'];
-        }
+        if($is_return_phone && isset($result['phone_info']['purePhoneNumber'])) return $result['phone_info']['purePhoneNumber'];
 
         return $result['phone_info'];
     }
